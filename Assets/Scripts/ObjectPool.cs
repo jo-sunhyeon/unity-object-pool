@@ -8,32 +8,32 @@ using UnityEngine;
 
 public class ObjectPool : MonoBehaviour
 {
-	public GameObject GetObject() 
-	{
-		if (_inactiveObjects.Count > 0) 
-		{
-			var dequeuedObject = _inactiveObjects.Dequeue();
-			dequeuedObject.transform.SetParent(null);
-			dequeuedObject.SetActive(true);
-			return dequeuedObject;
-		}
-		else 
-		{
-			return Instantiate(Prefab);
-		}
-	}
+    public GameObject GetObject() 
+    {
+        if (_inactiveObjects.Count > 0) 
+        {
+            var dequeuedObject = _inactiveObjects.Dequeue();
+            dequeuedObject.transform.SetParent(null);
+            dequeuedObject.SetActive(true);
+            return dequeuedObject;
+        }
+        else 
+        {
+            return Instantiate(Prefab);
+        }
+    }
 
-	public void ReturnObject(GameObject toReturn) 
-	{
-		if (toReturn == null)
-		{
-			throw new ArgumentNullException();
-		}
-		toReturn.transform.SetParent(transform);
-		toReturn.SetActive(false);
+    public void ReturnObject(GameObject toReturn) 
+    {
+        if (toReturn == null)
+        {
+            throw new ArgumentNullException();
+        }
+        toReturn.transform.SetParent(transform);
+        toReturn.SetActive(false);
         _inactiveObjects.Enqueue(toReturn);
-	}
-	
-	public GameObject Prefab;
-	private Queue<GameObject> _inactiveObjects = new Queue<GameObject>();
+    }
+    
+    public GameObject Prefab;
+    private Queue<GameObject> _inactiveObjects = new Queue<GameObject>();
 }
