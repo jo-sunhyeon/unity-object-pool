@@ -10,16 +10,16 @@ public class ObjectPool : MonoBehaviour
 {
 	public GameObject GetObject() 
 	{
-		if (inactiveObjects.Count > 0) 
+		if (_inactiveObjects.Count > 0) 
 		{
-			var dequeuedObject = inactiveObjects.Dequeue();
+			var dequeuedObject = _inactiveObjects.Dequeue();
 			dequeuedObject.transform.SetParent(null);
 			dequeuedObject.SetActive(true);
 			return dequeuedObject;
 		}
 		else 
 		{
-			return Instantiate(prefab);
+			return Instantiate(Prefab);
 		}
 	}
 
@@ -31,9 +31,9 @@ public class ObjectPool : MonoBehaviour
 		}
 		toReturn.transform.SetParent(transform);
 		toReturn.SetActive(false);
-		inactiveObjects.Enqueue(toReturn);
+        _inactiveObjects.Enqueue(toReturn);
 	}
 	
-	public GameObject prefab;
-	private Queue<GameObject> inactiveObjects = new Queue<GameObject>();
+	public GameObject Prefab;
+	private Queue<GameObject> _inactiveObjects = new Queue<GameObject>();
 }
