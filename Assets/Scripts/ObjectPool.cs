@@ -22,20 +22,20 @@ public class ObjectPool : MonoBehaviour
         }
     }
 
-    public void DestroyOrReturnObject(GameObject gameObject) 
+    public void ReturnOrDestroyObject(GameObject gameObject) 
     {
         if (gameObject == null)
         {
             throw new ArgumentNullException();
         }
-        if (gameObject.GetComponent<PooledObject>() == null)
+        if (gameObject.GetComponent<PooledObject>() != null)
         {
-            Destroy(gameObject);
+            gameObject.transform.SetParent(transform);
+            gameObject.SetActive(false);
+            inactiveObjects.Enqueue(gameObject);
             return;
         }
-        gameObject.transform.SetParent(transform);
-        gameObject.SetActive(false);
-        inactiveObjects.Enqueue(gameObject);
+        Destroy(gameObject);
     }
     
     public GameObject Prefab;
