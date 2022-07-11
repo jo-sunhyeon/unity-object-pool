@@ -1,7 +1,3 @@
-// References:
-// https://learn.unity.com/tutorial/live-training-shop-ui-with-runtime-scroll-lists#5c7f8528edbc2a002053b4c8
-// Paris Buttfield-Addison, Jon Manning, and Tim Nugent. Unity Game Development Cookbook: Essentials for Every Game. O'Reilly Media, 2019
-
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -19,19 +15,27 @@ public class ObjectPool : MonoBehaviour
         }
         else 
         {
-            return Instantiate(Prefab);
+            var newObject = Instantiate(Prefab);
+            var pooledObject = newObject.AddComponent<PooledObject>();
+            pooledObject.owner = this;
+            return newObject;
         }
     }
 
-    public void ReturnObject(GameObject toReturn) 
+    public void DestroyOrReturnObject(GameObject gameObject) 
     {
-        if (toReturn == null)
+        if (gameObject == null)
         {
             throw new ArgumentNullException();
         }
-        toReturn.transform.SetParent(transform);
-        toReturn.SetActive(false);
-        inactiveObjects.Enqueue(toReturn);
+        if (gameObject.GetComponent<PooledObject>() == null)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        gameObject.transform.SetParent(transform);
+        gameObject.SetActive(false);
+        inactiveObjects.Enqueue(gameObject);
     }
     
     public GameObject Prefab;
