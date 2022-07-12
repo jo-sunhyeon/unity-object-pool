@@ -30,7 +30,7 @@ public class ObjectPool : MonoBehaviour
         }
         if (toReturn.GetComponent<PooledObject>() == null)
         {
-            throw new ArgumentNullException();
+            throw new ArgumentException();
         }
         toReturn.transform.SetParent(transform);
         toReturn.SetActive(false);
