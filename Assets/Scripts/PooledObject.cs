@@ -9,18 +9,18 @@ public class PooledObject : MonoBehaviour
 
 public static class PooledObjectExtension
 {
-    public static void ReturnOrDestroy(this GameObject gameObject)
+    public static void Free(this GameObject gameObject)
     {
         if (gameObject == null)
         {
             throw new ArgumentNullException();
         }
         var pooledObject = gameObject.GetComponent<PooledObject>();
-        if (pooledObject != null)
+        if (pooledObject == null)
         {
-            pooledObject.owner.ReturnObject(gameObject);
+            Object.Destroy(gameObject);
             return;
         }
-        Object.Destroy(gameObject);
+        pooledObject.owner.ReturnObject(gameObject);
     }
 }
