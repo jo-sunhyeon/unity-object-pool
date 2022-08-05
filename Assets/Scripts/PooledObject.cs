@@ -15,7 +15,7 @@ public static class PooledObjectExtension
         {
             throw new ArgumentNullException();
         }
-        var pooledObject = gameObject.GetComponent<PooledObject>();
+        PooledObject pooledObject = gameObject.GetComponent<PooledObject>();
         if (pooledObject == null)
         {
             Object.Destroy(gameObject);
